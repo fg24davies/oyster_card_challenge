@@ -11,5 +11,9 @@ describe Oystercard do
     allow(card).to receive(:balance) { 0 }
     expect(card.top_up(5)).to eq(5)
   end
+# challenge 6: I want a maximum amount 
+  it 'has a maximum balance of £90' do 
+    expect { card.top_up(91) }.to raise_error 'Maximum balance reached'
+  end
 
 end 
