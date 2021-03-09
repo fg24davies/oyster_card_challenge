@@ -1,19 +1,64 @@
 require 'oystercard'
-# challenge 3: I want to my card to have a balance
+
 describe Oystercard do
-  card = Oystercard.new
 
-  it 'creates a new card with a balance of 0' do
-    expect(card.balance).to eq(0)
-  end
-# challenge 5: I want to top up my card
-  it 'tops up the balance of the card' do
-    allow(card).to receive(:balance) { 0 }
-    expect(card.top_up(5)).to eq(5)
-  end
-# challenge 6: I want a maximum amount 
-  it 'has a maximum balance of £90' do 
-    expect { card.top_up(91) }.to raise_error 'Maximum balance reached'
+  describe 'when first created' do
+    it { is_expected.to respond_to(:balance) }
+
+    it 'initialises with a blanace of zero' do
+      expect(subject.balance).to eq 0
+    end
   end
 
-end 
+  describe 'top up features' do
+    it { is_expected.to respond_to(:top_up).with(1).argument }
+
+    it 'increases the balance by the argument amount using :top_up' do
+      expect { subject.top_up(10) }.to change { subject.balance }.by(10)
+    end
+
+    it 'raises an error if the top_up method puts balance over £90' do
+      expect { subject.top_up(100) }.to raise_error('Maximum balance reached')
+    end
+  end
+
+  describe 'touch_in' do
+    it { is_expected.to respond_to(:touch_in)}
+
+    it 'store a true value if card was touched in' do
+      subject.top_up(5)
+      expect(subject.touch_in).to be(true)
+    end
+
+    it'prevents touch in when balance is below £1' do
+      expect { subject.touch_in }.to raise_error('Insufficient funds')
+    end
+  end
+
+  describe 'touch_out' do
+    it { is_expected.to respond_to(:touch_out)}
+
+    it 'store a false value if card was touched out' do
+      expect(subject.touch_out).to be(false)
+     end
+
+    it 'deducts card balance by the fare' do
+      expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
+    end
+
+  end
+  describe 'in_journey?' do
+    it { is_expected.to respond_to(:in_journey?)}
+
+    it 'returns true when the card is in_use' do
+      subject.top_up(5)
+      subject.touch_in
+      expect(subject).to be_in_journey
+    end
+
+    it 'tells if not in journey' do
+      subject.touch_out
+      expect(subject).to_not be_in_journey
+    end
+  end
+end
