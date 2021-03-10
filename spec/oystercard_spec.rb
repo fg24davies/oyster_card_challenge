@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   describe 'when first created' do
+
     it { is_expected.to respond_to(:balance) }
 
     it 'initialises with a blanace of zero' do
@@ -23,40 +24,64 @@ describe Oystercard do
   end
 
   describe 'touch_in' do
-    it { is_expected.to respond_to(:touch_in)}
+
+    let(:station) { double :station }
+
+    it { is_expected.to respond_to(:touch_in) }
 
     it 'store a true value if card was touched in' do
       subject.top_up(5)
-      expect(subject.touch_in).to be(true)
+      expect(subject.touch_in(station)).to be(true)
     end
 
-    it'prevents touch in when balance is below £1' do
-      expect { subject.touch_in }.to raise_error('Insufficient funds')
+    it 'prevents touch in when balance is below £1' do
+      expect { subject.touch_in(station) }.to raise_error('Insufficient funds')
+    end
+
+    it 'records the entry station of the current journey' do   
+      subject.top_up(1)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq(station) 
     end
   end
 
-  describe 'touch_out' do
-    it { is_expected.to respond_to(:touch_out)}
 
-    it 'store a false value if card was touched out' do
-      expect(subject.touch_out).to be(false)
-     end
+    
+
+
+  describe 'touch_out' do
+
+    let(:station) { double :station }
+
+    it { is_expected.to respond_to(:touch_out)}
 
     it 'deducts card balance by the fare' do
       expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
     end
 
+    it 'sets entry_station to nil' do
+      subject.top_up(1)
+      subject.touch_in(station)
+      subject.touch_out
+      expect(subject.entry_station).to eq(nil)
+    end
+
   end
   describe 'in_journey?' do
+
+    let(:station) { double :station }
+
     it { is_expected.to respond_to(:in_journey?)}
 
-    it 'returns true when the card is in_use' do
+    it 'returns true when on a journey' do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
 
-    it 'tells if not in journey' do
+    it 'returns false when not on a journey' do
+      subject.top_up(5)
+      subject.touch_in(station)
       subject.touch_out
       expect(subject).to_not be_in_journey
     end
