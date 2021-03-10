@@ -6,9 +6,15 @@ describe Oystercard do
 
     it { is_expected.to respond_to(:balance) }
 
-    it 'initialises with a blanace of zero' do
+    it 'initialises with a balance of zero' do
       expect(subject.balance).to eq 0
     end
+    
+    it 'starts with an empty journey history' do 
+      expect(subject.journeys).to eq([])
+    end
+
+
   end
 
   describe 'top up features' do
@@ -45,28 +51,47 @@ describe Oystercard do
     end
   end
 
-
-    
-
-
   describe 'touch_out' do
 
     let(:station) { double :station }
 
     it { is_expected.to respond_to(:touch_out)}
 
-    it 'deducts card balance by the fare' do
-      expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
+    it 'deducts card balance by the fare'  do
+      subject.top_up(1)
+      subject.touch_in(station)
+      expect { subject.touch_out(station) }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
     end
 
     it 'sets entry_station to nil' do
       subject.top_up(1)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(station)
       expect(subject.entry_station).to eq(nil)
     end
 
+    it 'records the exit station of the journey' do
+      subject.top_up(1)
+      subject.touch_in(station)
+      subject.touch_out(station)
+      expect(subject.exit_station).to eq(station)
+    end
+
+    it 'adds the exit station to the journey history' do
+      subject.top_up(1)
+      subject.touch_in(station)
+      subject.touch_out(station)
+      expect(subject.journeys.last).to include({ exit_station: station })
+    end
+    
+    it 'will create one complete journey' do
+      subject.top_up(1)
+      subject.touch_in(station)
+      subject.touch_out(station)
+      expect(subject.journeys.length).to eq(1)
+    end
   end
+  
   describe 'in_journey?' do
 
     let(:station) { double :station }
@@ -82,7 +107,7 @@ describe Oystercard do
     it 'returns false when not on a journey' do
       subject.top_up(5)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(station)
       expect(subject).to_not be_in_journey
     end
   end
