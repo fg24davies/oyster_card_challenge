@@ -2,11 +2,7 @@ require 'station'
 
 describe Station do
 
-    let(:station) { double :station }
-
-    it 'has a name' do
-        subject.name = station
-        expect(subject.name).to eq(station)
-    end
+  it { is_expected.to respond_to :name }
+  it { is_expected.to respond_to :zone }
 
 end

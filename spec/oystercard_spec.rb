@@ -1,6 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
+  let(:journey) { double :journey }
 
   describe 'when first created' do
 
@@ -9,9 +10,9 @@ describe Oystercard do
     it 'initialises with a balance of zero' do
       expect(subject.balance).to eq 0
     end
-    
-    it 'starts with an empty journey history' do 
-      expect(subject.journeys).to eq([])
+
+    it 'starts with an empty journey history' do
+      expect(subject.journey_history).to eq([])
     end
 
 
@@ -37,17 +38,11 @@ describe Oystercard do
 
     it 'store a true value if card was touched in' do
       subject.top_up(5)
-      expect(subject.touch_in(station)).to be(true)
+      expect(subject.touch_in(station)).to be station
     end
 
     it 'prevents touch in when balance is below £1' do
       expect { subject.touch_in(station) }.to raise_error('Insufficient funds')
-    end
-
-    it 'records the entry station of the current journey' do   
-      subject.top_up(1)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq(station) 
     end
   end
 
@@ -63,52 +58,19 @@ describe Oystercard do
       expect { subject.touch_out(station) }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
     end
 
-    it 'sets entry_station to nil' do
-      subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject.entry_station).to eq(nil)
-    end
-
-    it 'records the exit station of the journey' do
-      subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject.exit_station).to eq(station)
-    end
-
-    it 'adds the exit station to the journey history' do
-      subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject.journeys.last).to include({ exit_station: station })
-    end
-    
     it 'will create one complete journey' do
       subject.top_up(1)
       subject.touch_in(station)
       subject.touch_out(station)
-      expect(subject.journeys.length).to eq(1)
+      expect(subject.journey_history.length).to eq(1)
     end
   end
-  
-  describe 'in_journey?' do
 
-    let(:station) { double :station }
-
-    it { is_expected.to respond_to(:in_journey?)}
-
-    it 'returns true when on a journey' do
-      subject.top_up(5)
-      subject.touch_in(station)
-      expect(subject).to be_in_journey
-    end
-
-    it 'returns false when not on a journey' do
-      subject.top_up(5)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject).to_not be_in_journey
+  describe '#fare' do
+    it 'should calculate a fine if journey not completed' do
+      allow(journey).to receive(:journey_completed?) { true }
+      expect(subject.fare).to eq 6
     end
   end
+
 end
