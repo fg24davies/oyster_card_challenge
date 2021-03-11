@@ -11,11 +11,6 @@ describe Oystercard do
       expect(subject.balance).to eq 0
     end
 
-    it 'starts with an empty journey history' do
-      expect(subject.journey_history).to eq([])
-    end
-
-
   end
 
   describe 'top up features' do
@@ -58,12 +53,6 @@ describe Oystercard do
       expect { subject.touch_out(station) }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
     end
 
-    it 'will create one complete journey' do
-      subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject.journey_history.length).to eq(1)
-    end
   end
 
   describe '#fare' do

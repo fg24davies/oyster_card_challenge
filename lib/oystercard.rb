@@ -8,7 +8,7 @@ class Oystercard
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @journey = Journey.new
-    @journey_history = []
+    @journey_history = Journeylog.new
     @fare = MINIMUM_FARE
   end
 
@@ -29,7 +29,7 @@ class Oystercard
   end
 
   def save_journey
-    @journey_history << @journey
+    @journey_history.journeys
   end
 
   def fare
