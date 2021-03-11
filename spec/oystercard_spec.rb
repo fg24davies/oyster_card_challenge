@@ -47,12 +47,6 @@ describe Oystercard do
 
     it { is_expected.to respond_to(:touch_out)}
 
-    it 'deducts card balance by the fare'  do
-      subject.top_up(1)
-      subject.touch_in(station)
-      expect { subject.touch_out(station) }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
-    end
-
   end
 
   describe '#fare' do
