@@ -1,52 +1,72 @@
-Project title
-A little info about your project and/ or overview that explains what the project is about.
+# Oyster Card Challenge 
+
+Week 2 of Maker's afternoon challenges, it started with going back over the basics we covered last week in Boris Bikes (reinforcing what we learned last week). Thn we were challenged to build a more complex system which stretched our skills in Ruby, TDD and object-oriented design.
+
+The functionality of the Oyster card was determined from the given user stories
+
+```
+In order to use public transport
+As a customer
+I want money on my card
+
+In order to keep using public transport
+As a customer
+I want to add money to my card
+
+In order to protect my money
+As a customer
+I don't want to put too much money on my card
+
+In order to pay for my journey
+As a customer
+I need my fare deducted from my card
+
+In order to get through the barriers
+As a customer
+I need to touch in and out
+
+In order to pay for my journey
+As a customer
+I need to have the minimum amount for a single journey
+
+In order to pay for my journey
+As a customer
+I need to pay for my journey when it's complete
+
+In order to pay for my journey
+As a customer
+I need to know where I've travelled from
+
+In order to know where I have been
+As a customer
+I want to see to all my previous trips
+
+In order to know how far I have travelled
+As a customer
+I want to know what zone a station is in
+
+In order to be charged correctly
+As a customer
+I need a penalty charge deducted if I fail to touch in or out
+
+In order to be charged the correct amount
+As a customer
+I need to have the correct fare calculated
+```
 
 Motivation
-A short description of the motivation behind the creation and maintenance of the project. This should explain why the project exists.
 
-Build status
-Build status of continus integration i.e. travis, appveyor etc. Ex. -
+This project was part of resources working towards the learning objectives of week 2:
 
-Build Status Windows Build Status
+- Use all of week 1's skills (don't underestimate the importance of this)
+- Break one class into two classes that work together, while maintaining test coverage
+- Unit test classes in isolation using mocking
+- Explain some basic OO principles and tie them to high level concerns (e.g. ease of change)
 
-Code style
-If you're using any code style like xo, standard etc. That will help others while contributing to your project. Ex. -
+Currently all challenges are complete but there is an error when calling the fare method to come back to. 
 
-js-standard-style
+Testing the code in IRB shows this error:
 
-Screenshots
-Include logo/demo screenshot etc.
+The code is written in Ruby and using RSpec tests.
 
-Tech/framework used
-Ex. -
-
-Built with
-
-Electron
-Features
-What makes your project stand out?
-
-Code Example
-I.E HOW YOUR CODE WORKS IN IRB!!!!!
-Show what the library does as concisely as possible, developers should be able to figure out how your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
-
-Installation
-Provide step by step series of examples and explanations about how to get a development env running.
-
-API Reference
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
-Tests
-Describe and show how to run the tests with code examples.
-
-How to use?
-If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
-
-Contribute
-Let people know how they can contribute into your project. A contributing guideline will be a big plus.
-
-Credits
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contrbuted in this project.
-
-Anything else that seems useful
-License
+Big shout out to @Emmapr123, @Yates101, @
