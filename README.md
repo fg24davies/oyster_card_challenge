@@ -54,7 +54,7 @@ As a customer
 I need to have the correct fare calculated
 ```
 
-Motivation
+## Motivation
 
 This project was part of resources working towards the learning objectives of week 2:
 
@@ -63,10 +63,16 @@ This project was part of resources working towards the learning objectives of we
 - Unit test classes in isolation using mocking
 - Explain some basic OO principles and tie them to high level concerns (e.g. ease of change)
 
-Currently all challenges are complete but there is an error when calling the fare method to come back to. 
+Currently all challenges are complete but there is an error when calling the fare method to come back to.
+
+Screenshot of code functionality in IRB: 
+
+![image](https://user-images.githubusercontent.com/30720508/110967298-210b2b80-834e-11eb-842f-87982958801c.png)
+
 
 Testing the code in IRB shows this error:
 
 The code is written in Ruby and using RSpec tests.
 
-Big shout out to @Emmapr123, @Yates101, @
+Big shout out to @Emmapr123, @Yates101, @IchchadhariNaag, @TataSher, @LizTruman for the pair programming sesssions to work on this project together.
+
